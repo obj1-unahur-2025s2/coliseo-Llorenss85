@@ -20,9 +20,11 @@ class Mirmillones {
   } 
   
   method recibirDaño(unGladeador,unAtaque) {
-    vida -= self.defensa() - unAtaque
+    if(vida>0){
+      vida -= self.defensa() - unAtaque
+      self.atacar(unGladeador)
+    }
     vida= vida.min(0) //consola dicta que: -1.min(0) => 0
-    self.atacar(unGladeador) 
   }
   method crearGrupo(otroGladeador) {
     grupo = new Grupo(nombre="mirmillolandia")
@@ -47,15 +49,18 @@ class Dimachaerus{
     method agregarArma(unArma) {
     armas.add(unArma)
   }
-  method ataque() =  self.fuerza() + armas.sum()
+  method ataque() =  self.fuerza() + armas.map({a =>a.ataque()}).sum()
   method defensa() =destreza/2 
   method atacar(unGladeador) {
     unGladeador.recibirDaño(self.ataque()) 
     destreza+=1
   }
   method recibirDaño(unGladeador,unAtaque) {
-    vida= self.defensa() -unAtaque
-    self.atacar(unGladeador) //contraAtaque
+    if(vida>0){
+      vida -= self.defensa() - unAtaque
+      self.atacar(unGladeador)
+    }
+    vida= vida.min(0) //consola dicta que: -1.min(0) => 0
   } 
   method vida() =vida 
   method crearGrupo(otroGladeador) {
